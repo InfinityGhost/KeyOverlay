@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="KeyOverlay.Controls.KeyStateViewer" Name="Control"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KeyOverlay.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="40">
+    <Grid DataContext="{Binding ElementName=Control}" Background="{Binding CurrentBrush, FallbackValue=Red}"
+          MinWidth="40" MinHeight="40">
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Remove key" Click="RemoveKey_Click"/>
+            </ContextMenu>
+        </Grid.ContextMenu>
+        <TextBlock Name="TextBlock" Text="KEY" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    </Grid>
+</UserControl>

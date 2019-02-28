@@ -1,12 +1,93 @@
-﻿<Window x:Class="KeyOverlay.MainWindow"
+﻿<Window xmlns:Controls="clr-namespace:KeyOverlay.Controls"  x:Class="KeyOverlay.MainWindow" Name="Window"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KeyOverlay"
+        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="KeyOverlay"
+        Width="400" Height="400">
+    <Window.Resources>
+        <Style x:Key="Base" TargetType="FrameworkElement">
+            <Setter Property="Margin" Value="2.5,0"/>
+        </Style>
+        <Style x:Key="BoxItem" TargetType="FrameworkElement" BasedOn="{StaticResource Base}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="MinWidth" Value="75"/>
+            <Setter Property="Height" Value="24"/>
+        </Style>
+        <Style x:Key="ButtonBase" TargetType="FrameworkElement">
+            <Setter Property="Margin" Value="2.5"/>
+            <Setter Property="MinHeight" Value="22"/>
+            <Setter Property="MinWidth" Value="75"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18"/>
+            <RowDefinition/>
+            <RowDefinition Height="18"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" Background="White">
+            <MenuItem Header="File">
+                <MenuItem Header="Load configurartion..." Click="LoadConfig_Click"/>
+                <MenuItem Header="Save default configuration" Click="SaveDefaultConfig_Click"/>
+                <MenuItem Header="Save configuration as..." Click="SaveConfigAs_Click"/>
+                <MenuItem Header="Exit" Click="Exit_Click"/>
+            </MenuItem>
+        </Menu>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Keys">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <WrapPanel Name="ButtonsPanel">
+                        <WrapPanel.Resources>
+                            <Style TargetType="Controls:KeyStateViewer">
+                                <Setter Property="Margin" Value="2.5"/>
+                            </Style>
+                        </WrapPanel.Resources>
+                    </WrapPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        <StackPanel.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource Base}">
+                                <Setter Property="MinHeight" Value="24"/>
+                                <Setter Property="MinWidth" Value="75"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="5,0"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Controls:KeyReader x:Name="KeyReader" Width="100" Style="{StaticResource BoxItem}"/>
+                        <Button Content="Add Key" Click="AddKey_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Configuration">
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style TargetType="GroupBox" BasedOn="{StaticResource Base}"/>
+                        <Style TargetType="Button" BasedOn="{StaticResource ButtonBase}"/>
+                    </StackPanel.Resources>
+                    <GroupBox Header="Key Down Color (Hex)">
+                        <TextBox Text="{Binding ElementName=Window, Path=Config.KeyDownBrush, diag:PresentationTraceSources.TraceLevel=High}"/>
+                    </GroupBox>
+                    <GroupBox Header="Key Up Color (Hex)">
+                        <TextBox Text="{Binding ElementName=Window, Path=Config.KeyUpBrush}"/>
+                    </GroupBox>
+                    <GroupBox Header="Background (Hex)">
+                        <TextBox Text="{Binding ElementName=Window, Path=Config.BackgroundBrush}"/>
+                    </GroupBox>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <!--Buttons-->
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
         
     </Grid>
 </Window>
