@@ -130,9 +130,14 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="{Binding ElementName=PRLabel, Path=Width}"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Text="{Binding ElementName=Window, Path=Config.PollRate, diag:PresentationTraceSources.TraceLevel=High}"/>
+                                    <TextBox Text="{Binding Path=PollRate}"/>
                                     <Label Name="PRLabel" Grid.Column="1" Content="ms" Margin="0,-4" HorizontalAlignment="Right"/>
                                 </Grid>
+                            </GroupBox>
+                            <GroupBox Header="Window Properties">
+                                <StackPanel>
+                                    <CheckBox IsChecked="{Binding Path=HideOnPopout}" Content="Hide on keys panel popout"/>
+                                </StackPanel>
                             </GroupBox>
                         </StackPanel>
                     </ScrollViewer>

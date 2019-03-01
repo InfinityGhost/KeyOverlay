@@ -97,10 +97,15 @@ namespace KeyOverlay
                         {
                             (win as KeyPopoutWindow).Content = null;
                             KeysPageGrid.Children.Add(ButtonsPanel);
+
+                            if (Window.Visibility == Visibility.Hidden)
+                                Window.Show();
                             _poppedout = false;
                         };
 
                         PopoutWindow.Show();
+                        if (Config.HideOnPopout)
+                            this.Hide();
                         _poppedout = true;
                     }
                     else
