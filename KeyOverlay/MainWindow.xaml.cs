@@ -1,5 +1,6 @@
 ﻿using KeyOverlay.Controls;
 using KeyOverlay.Controls.FileManagement;
+using KeyOverlay.Controls.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,6 +33,8 @@ namespace KeyOverlay
             else
                 Config = new Configuration();
             RefreshKeys();
+
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
 
         #region Properties
@@ -45,6 +48,66 @@ namespace KeyOverlay
                 NotifyPropertyChanged();
             }
             get => _cfg;
+        }
+
+        private bool _addingkey = false;
+        public bool AddingKey
+        {
+            private set
+            {
+                if (value != _addingkey)
+                {
+                    if (value)
+                    {
+                        Keyboard.AddKeyDownHandler(this, KeyHookReq);
+                        if (PopoutWindow != null)
+                            Keyboard.AddKeyDownHandler(PopoutWindow, KeyHookReq);
+                        ButtonsPanel.Children.Add(AddKeyItem.Item);
+                        _addingkey = value;
+                    }
+                    else
+                    {
+                        Keyboard.RemoveKeyDownHandler(this, KeyHookReq);
+                        if (PopoutWindow != null)
+                            Keyboard.RemoveKeyDownHandler(PopoutWindow, KeyHookReq);
+                        ButtonsPanel.Children.Remove(AddKeyItem.Item);
+                        _addingkey = value;
+                    }
+                }
+            }
+            get => _addingkey;
+        }
+
+        private KeyPopoutWindow PopoutWindow;
+
+        private bool _poppedout = false;
+        public bool IsPoppedOut
+        {
+            private set
+            {
+                if (value != _poppedout)
+                {
+                    if (value)
+                    {
+                        KeysPageGrid.Children.Remove(ButtonsPanel);
+
+                        PopoutWindow = new KeyPopoutWindow(ButtonsPanel, Config);
+                        PopoutWindow.AddKeyRequested += AddKeyRequested;
+                        PopoutWindow.Closed += (win, args) =>
+                        {
+                            (win as KeyPopoutWindow).Content = null;
+                            KeysPageGrid.Children.Add(ButtonsPanel);
+                            _poppedout = false;
+                        };
+
+                        PopoutWindow.Show();
+                        _poppedout = true;
+                    }
+                    else
+                        PopoutWindow.Close();
+                }
+            }
+            get => _poppedout;
         }
 
         #endregion
@@ -64,6 +127,13 @@ namespace KeyOverlay
                 Config.Keys.Add(key);
                 DisplayKey(key);
             }
+        }
+
+        public void KeyHookReq(object sender, KeyEventArgs e)
+        {
+            AddKey(e.Key);
+            if (AddingKey)
+                AddingKey = false;
         }
 
         public void RemoveKey(Key key)
@@ -86,6 +156,11 @@ namespace KeyOverlay
             ButtonsPanel.Children.Add(viewer);
         }
 
+        private void AddKeyRequested(object sender, RoutedEventArgs e)
+        {
+            AddingKey = true;
+        }
+
         private void RemoveKeyRequested(object sender, EventArgs e)
         {
             var key = sender as KeyStateViewer;
@@ -95,12 +170,6 @@ namespace KeyOverlay
         #endregion
 
         #region Buttons & Configuration Settings
-
-        private void AddKey_Click(object sender, RoutedEventArgs e)
-        {
-            if (KeyReader.Key != null && KeyReader.Key != 0)
-                AddKey((Key)KeyReader.Key);
-        }
 
         private void SettingTextbox_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -146,6 +215,22 @@ namespace KeyOverlay
         {
             if (PropertyName != null)
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        }
+
+        #endregion
+
+        #region Window Options
+
+        private void WindowDrag_LeftMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ButtonState.HasFlag(MouseButtonState.Pressed) && e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+            System.Diagnostics.Debug.WriteLine(e.ChangedButton);
+        }
+
+        private void PopoutKeys(object sender, RoutedEventArgs e)
+        {
+            IsPoppedOut = !IsPoppedOut;
         }
 
         #endregion

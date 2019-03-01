@@ -1,10 +1,12 @@
-﻿<Window xmlns:Controls="clr-namespace:KeyOverlay.Controls"  x:Class="KeyOverlay.MainWindow" Name="Window"
+﻿<Window x:Class="KeyOverlay.MainWindow" Name="Window"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KeyOverlay"
         xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+        xmlns:Controls="clr-namespace:KeyOverlay.Controls" 
+        xmlns:internal="clr-namespace:KeyOverlay.Controls.Internal"
         mc:Ignorable="d"
         Title="KeyOverlay"
         Width="400" Height="400">
@@ -48,26 +50,33 @@
         </Menu>
         <TabControl Grid.Row="1">
             <TabItem Header="Keys">
-                <Grid Background="{Binding ElementName=Window, Path=Config.BackgroundBrush}">
+                <Grid Name="KeysPageGrid" Background="{Binding ElementName=Window, Path=Config.BackgroundBrush}"
+                      MouseLeftButtonDown="WindowDrag_LeftMouseDown" IsHitTestVisible="True">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
-                    <ScrollViewer>
-                        <WrapPanel Name="ButtonsPanel">
-                            <WrapPanel.Resources>
-                                <Style TargetType="Controls:KeyStateViewer">
-                                    <Setter Property="Margin" Value="2.5"/>
-                                </Style>
-                            </WrapPanel.Resources>
-                            <WrapPanel.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Add Key" IsEnabled="False"/>
-                                    <!--TODO: allow adding keys through context menu-->
-                                </ContextMenu>
-                            </WrapPanel.ContextMenu>
-                        </WrapPanel>
-                    </ScrollViewer>
+                    <Grid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Add Key" Click="AddKeyRequested"/>
+                            <MenuItem Header="Popout" Click="PopoutKeys"/>
+                            <!--TODO: allow adding keys through context menu-->
+                        </ContextMenu>
+                    </Grid.ContextMenu>
+                    
+                    <WrapPanel Name="ButtonsPanel">
+                        <WrapPanel.Resources>
+                            <Style TargetType="Controls:KeyStateViewer">
+                                <Setter Property="Margin" Value="2.5"/>
+                                <Setter Property="IsHitTestVisible" Value="True"/>
+                            </Style>
+                            <Style TargetType="internal:AddKeyItem">
+                                <Setter Property="Margin" Value="2.5"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </WrapPanel.Resources>
+                    </WrapPanel>
                     <StackPanel Grid.Row="1" Orientation="Horizontal"
                                 HorizontalAlignment="Center">
                         <StackPanel.Resources>
@@ -78,8 +87,7 @@
                                 <Setter Property="Padding" Value="5,0"/>
                             </Style>
                         </StackPanel.Resources>
-                        <Controls:KeyReader x:Name="KeyReader" Width="100" Style="{StaticResource BoxItem}"/>
-                        <Button Content="Add Key" Click="AddKey_Click"/>
+                        <Button Content="Add Key" Click="AddKeyRequested"/>
                     </StackPanel>
                 </Grid>
             </TabItem>

@@ -35,6 +35,8 @@ namespace KeyOverlay.Controls
             // Stops hook when application closes, avoids null reference exceptions.
             Application.Current.MainWindow.Closing += (sender, args) => Unhook();
             TextBlock.Text = $"{InputHook.Key}";
+
+            CurrentBrush = KeyUpBrush;
         }
 
         public KeyStateViewer(InputHook input, Configuration config) : this(input)

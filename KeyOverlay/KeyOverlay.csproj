@@ -56,6 +56,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\Internal\AddKeyItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\KeyPopoutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\KeyReader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -74,6 +82,12 @@
     </Compile>
     <Compile Include="Configuration.cs" />
     <Compile Include="Controls\FileManagement\FileDialog.cs" />
+    <Compile Include="Controls\Internal\AddKeyItem.xaml.cs">
+      <DependentUpon>AddKeyItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\KeyPopoutWindow.xaml.cs">
+      <DependentUpon>KeyPopoutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\KeyReader.xaml.cs">
       <DependentUpon>KeyReader.xaml</DependentUpon>
     </Compile>
