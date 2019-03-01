@@ -60,7 +60,7 @@ namespace KeyOverlay
 
         private async void PollKeyState(object sender, ElapsedEventArgs e)
         {
-            AppDispatcher.Invoke(() =>
+            await AppDispatcher.InvokeAsync(() =>
             {
                 var newState = Keyboard.GetKeyStates(Key);
                 if (newState != CurrentState)
