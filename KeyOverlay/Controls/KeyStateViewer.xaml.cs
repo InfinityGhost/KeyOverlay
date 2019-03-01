@@ -41,6 +41,8 @@ namespace KeyOverlay.Controls
         {
             KeyDownBrush = config.KeyDownBrush;
             KeyUpBrush = config.KeyUpBrush;
+            TextBrush = config.TextBrush;
+            NotifyPropertyChanged("TextBrush");
         }
 
         #region Properties & Events
@@ -51,6 +53,7 @@ namespace KeyOverlay.Controls
 
         public Brush KeyDownBrush { set; get; } = Brushes.LightBlue;
         public Brush KeyUpBrush { set; get; } = Brushes.White;
+        public Brush TextBrush { set; get; } = Brushes.Black;
 
         private Brush _brush;
         public Brush CurrentBrush

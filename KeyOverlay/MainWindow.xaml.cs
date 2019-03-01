@@ -2,6 +2,7 @@
 using KeyOverlay.Controls.FileManagement;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace KeyOverlay
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public MainWindow()
         {
@@ -35,7 +36,16 @@ namespace KeyOverlay
 
         #region Properties
 
-        public Configuration Config { protected set; get; }
+        private Configuration _cfg;
+        public Configuration Config
+        {
+            set
+            {
+                _cfg = value;
+                NotifyPropertyChanged();
+            }
+            get => _cfg;
+        }
 
         #endregion
 
@@ -70,7 +80,7 @@ namespace KeyOverlay
 
         public void DisplayKey(Key key)
         {
-            var hook = new InputHook(key);
+            var hook = new InputHook(key, Config.PollRate);
             var viewer = new KeyStateViewer(hook, Config);
             viewer.RemoveKeyRequested += RemoveKeyRequested;
             ButtonsPanel.Children.Add(viewer);
@@ -84,12 +94,17 @@ namespace KeyOverlay
 
         #endregion
 
-        #region Buttons
+        #region Buttons & Configuration Settings
 
         private void AddKey_Click(object sender, RoutedEventArgs e)
         {
             if (KeyReader.Key != null && KeyReader.Key != 0)
                 AddKey((Key)KeyReader.Key);
+        }
+
+        private void SettingTextbox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            RefreshKeys();
         }
 
         #endregion
@@ -119,6 +134,18 @@ namespace KeyOverlay
                 Config = Configuration.Read(path);
                 RefreshKeys();
             }
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string PropertyName = "")
+        {
+            if (PropertyName != null)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
 
         #endregion

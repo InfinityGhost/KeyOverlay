@@ -13,6 +13,7 @@
                 <MenuItem Header="Remove key" Click="RemoveKey_Click"/>
             </ContextMenu>
         </Grid.ContextMenu>
-        <TextBlock Name="TextBlock" Text="KEY" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Name="TextBlock" Text="KEY" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Foreground="{Binding ElementName=Control, Path=TextBrush}"/>
     </Grid>
 </UserControl>

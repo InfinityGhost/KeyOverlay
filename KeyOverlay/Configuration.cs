@@ -15,10 +15,14 @@ namespace KeyOverlay
             KeyDownBrush = Brushes.LightBlue;
             KeyUpBrush = Brushes.White;
             BackgroundBrush = Brushes.Green;
+            PollRate = 10;
             Keys = new List<Key>();
         }
 
-        private Brush _downBrush, _upBrush, _backgroundBrush;
+        #region Colors
+
+        private Brush _downBrush, _upBrush, _backgroundBrush, _textBrush;
+
         public Brush KeyDownBrush
         {
             set
@@ -49,6 +53,18 @@ namespace KeyOverlay
             get => _backgroundBrush;
         }
 
+        public Brush TextBrush
+        {
+            set
+            {
+                _textBrush = value;
+                NotifyPropertyChanged();
+            }
+            get => _textBrush;
+        }
+
+        #endregion
+
         private List<Key> _keys;
         public List<Key> Keys
         {
@@ -58,6 +74,17 @@ namespace KeyOverlay
                 NotifyPropertyChanged();
             }
             get => _keys;
+        }
+
+        private int _poll;
+        public int PollRate
+        {
+            set
+            {
+                _poll = value;
+                NotifyPropertyChanged();
+            }
+            get => _poll;
         }
 
         #region Serialization

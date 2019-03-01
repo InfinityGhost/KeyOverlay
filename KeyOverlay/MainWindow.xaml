@@ -23,6 +23,14 @@
             <Setter Property="MinWidth" Value="75"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
+        <Style TargetType="ScrollViewer">
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        </Style>
+        <Style x:Key="TitleLabel" TargetType="Label">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -40,18 +48,26 @@
         </Menu>
         <TabControl Grid.Row="1">
             <TabItem Header="Keys">
-                <Grid>
+                <Grid Background="{Binding ElementName=Window, Path=Config.BackgroundBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
-                    <WrapPanel Name="ButtonsPanel">
-                        <WrapPanel.Resources>
-                            <Style TargetType="Controls:KeyStateViewer">
-                                <Setter Property="Margin" Value="2.5"/>
-                            </Style>
-                        </WrapPanel.Resources>
-                    </WrapPanel>
+                    <ScrollViewer>
+                        <WrapPanel Name="ButtonsPanel">
+                            <WrapPanel.Resources>
+                                <Style TargetType="Controls:KeyStateViewer">
+                                    <Setter Property="Margin" Value="2.5"/>
+                                </Style>
+                            </WrapPanel.Resources>
+                            <WrapPanel.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Add Key" IsEnabled="False"/>
+                                    <!--TODO: allow adding keys through context menu-->
+                                </ContextMenu>
+                            </WrapPanel.ContextMenu>
+                        </WrapPanel>
+                    </ScrollViewer>
                     <StackPanel Grid.Row="1" Orientation="Horizontal"
                                 HorizontalAlignment="Center">
                         <StackPanel.Resources>
@@ -67,25 +83,52 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Configuration">
-                <StackPanel>
-                    <StackPanel.Resources>
-                        <Style TargetType="GroupBox" BasedOn="{StaticResource Base}"/>
-                        <Style TargetType="Button" BasedOn="{StaticResource ButtonBase}"/>
-                    </StackPanel.Resources>
-                    <GroupBox Header="Key Down Color (Hex)">
-                        <TextBox Text="{Binding ElementName=Window, Path=Config.KeyDownBrush, diag:PresentationTraceSources.TraceLevel=High}"/>
-                    </GroupBox>
-                    <GroupBox Header="Key Up Color (Hex)">
-                        <TextBox Text="{Binding ElementName=Window, Path=Config.KeyUpBrush}"/>
-                    </GroupBox>
-                    <GroupBox Header="Background (Hex)">
-                        <TextBox Text="{Binding ElementName=Window, Path=Config.BackgroundBrush}"/>
-                    </GroupBox>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <!--Buttons-->
-                    </StackPanel>
-                </StackPanel>
+            <TabItem Header="Configuration" DataContext="{Binding ElementName=Window, Path=Config}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer Grid.Column="0">
+                        <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="GroupBox" BasedOn="{StaticResource Base}"/>
+                                <Style TargetType="Button" BasedOn="{StaticResource ButtonBase}"/>
+                                <Style TargetType="TextBox">
+                                    <EventSetter Event="LostFocus" Handler="SettingTextbox_LostFocus"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Label Content="Colors" Style="{StaticResource TitleLabel}"/>
+                            <GroupBox Header="Key Down Color (Hex)">
+                                <TextBox Text="{Binding Path=KeyDownBrush}"/>
+                            </GroupBox>
+                            <GroupBox Header="Key Up Color (Hex)">
+                                <TextBox Text="{Binding Path=KeyUpBrush}"/>
+                            </GroupBox>
+                            <GroupBox Header="Foreground (Hex)">
+                                <TextBox Text="{Binding Path=TextBrush}"/>
+                            </GroupBox>
+                            <GroupBox Header="Background (Hex)">
+                                <TextBox Text="{Binding Path=BackgroundBrush}"/>
+                            </GroupBox>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <ScrollViewer  Grid.Column="1">
+                        <StackPanel>
+                            <Label Content="Input &amp; Display Settings" Style="{StaticResource TitleLabel}"/>
+                            <GroupBox Header="Poll Rate">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="{Binding ElementName=PRLabel, Path=Width}"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding ElementName=Window, Path=Config.PollRate, diag:PresentationTraceSources.TraceLevel=High}"/>
+                                    <Label Name="PRLabel" Grid.Column="1" Content="ms" Margin="0,-4" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </GroupBox>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
             </TabItem>
         </TabControl>
         
