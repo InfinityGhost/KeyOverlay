@@ -79,6 +79,7 @@ namespace KeyOverlay
         }
 
         private KeyPopoutWindow PopoutWindow;
+        private KeyCounter KeyCounter;
 
         private bool _poppedout = false;
         public bool IsPoppedOut
@@ -130,7 +131,7 @@ namespace KeyOverlay
             if (!Config.Keys.Contains(key))
             {
                 Config.Keys.Add(key);
-                DisplayKey(key);
+                RefreshKeys();
             }
         }
 
@@ -145,11 +146,8 @@ namespace KeyOverlay
         {
             if (Config.Keys.Contains(key))
             {
-                var panelChildren = ButtonsPanel.Children.Cast<KeyStateViewer>();
-                var keyViewer = panelChildren.Where(e => e.InputHook.Key == key).First();
-                if (keyViewer != null)
-                    ButtonsPanel.Children.Remove(keyViewer);
                 Config.Keys.Remove(key);
+                RefreshKeys();
             }
         }
 
@@ -159,6 +157,15 @@ namespace KeyOverlay
             var viewer = new KeyStateViewer(hook, Config);
             viewer.RemoveKeyRequested += RemoveKeyRequested;
             ButtonsPanel.Children.Add(viewer);
+
+            var counters = ButtonsPanel.Children.Cast<KeyCounter>();
+            if (counters != null)
+                ButtonsPanel.Children.Remove(KeyCounter);
+            if (Config.ShowKPS)
+            {
+                KeyCounter = new KeyCounter(ButtonsPanel);
+                ButtonsPanel.Children.Add(KeyCounter);
+            }
         }
 
         private void AddKeyRequested(object sender, RoutedEventArgs e)
@@ -239,5 +246,10 @@ namespace KeyOverlay
         }
 
         #endregion
+
+        private void RefreshKeys_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshKeys();
+        }
     }
 }

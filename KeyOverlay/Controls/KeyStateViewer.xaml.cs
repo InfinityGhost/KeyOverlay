@@ -50,6 +50,7 @@ namespace KeyOverlay.Controls
         #region Properties & Events
 
         public event EventHandler RemoveKeyRequested;
+        public event EventHandler<bool> KeyChanged;
 
         public InputHook InputHook { private set; get; }
 
@@ -78,6 +79,7 @@ namespace KeyOverlay.Controls
                 CurrentBrush = KeyDownBrush;
             else
                 CurrentBrush = KeyUpBrush;
+            KeyChanged?.Invoke(this, isDown);
         }
 
         public void Unhook()

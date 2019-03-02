@@ -98,6 +98,17 @@ namespace KeyOverlay
             get => _hideOnPopout;
         }
 
+        private bool _showKps;
+        public bool ShowKPS
+        {
+            set
+            {
+                _showKps = value;
+                NotifyPropertyChanged();
+            }
+            get => _showKps;
+        }
+
         #region Serialization
 
         public static string DefaultPath = Directory.GetCurrentDirectory().Trim('/', '\\') + @"\default.xml";

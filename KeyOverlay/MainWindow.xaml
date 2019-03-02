@@ -33,6 +33,10 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
+        <Style x:Key="CheckboxHeightAdj" TargetType="CheckBox">
+            <Setter Property="Margin" Value="0,1.5"/>
+            <EventSetter Event="Click" Handler="RefreshKeys_Click"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -134,9 +138,13 @@
                                     <Label Name="PRLabel" Grid.Column="1" Content="ms" Margin="0,-4" HorizontalAlignment="Right"/>
                                 </Grid>
                             </GroupBox>
-                            <GroupBox Header="Window Properties">
+                            <GroupBox Header="Key Display Properties">
                                 <StackPanel>
+                                    <StackPanel.Resources>
+                                        <Style TargetType="CheckBox" BasedOn="{StaticResource CheckboxHeightAdj}"/>
+                                    </StackPanel.Resources>
                                     <CheckBox IsChecked="{Binding Path=HideOnPopout}" Content="Hide on keys panel popout"/>
+                                    <CheckBox IsChecked="{Binding Path=ShowKPS}" Content="Show KPS and key counter"/>
                                 </StackPanel>
                             </GroupBox>
                         </StackPanel>
