@@ -163,7 +163,7 @@ namespace KeyOverlay
                 ButtonsPanel.Children.Remove(KeyCounter);
             if (Config.ShowKPS)
             {
-                KeyCounter = new KeyCounter(ButtonsPanel);
+                KeyCounter = new KeyCounter(ButtonsPanel, Config);
                 ButtonsPanel.Children.Add(KeyCounter);
             }
         }

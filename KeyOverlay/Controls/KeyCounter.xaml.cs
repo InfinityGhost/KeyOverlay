@@ -21,7 +21,7 @@ namespace KeyOverlay.Controls
     /// </summary>
     public partial class KeyCounter : UserControl, INotifyPropertyChanged
     {
-        public KeyCounter(Panel panel)
+        public KeyCounter(Panel panel, Configuration config)
         {
             InitializeComponent();
             SetPanel(panel);
@@ -42,6 +42,8 @@ namespace KeyOverlay.Controls
 
             timer.Start();
             kpsUpdate.Start();
+
+            Foreground = config.TextBrush;
         }
 
         private void Viewer_KeyChanged(object sender, bool e)
