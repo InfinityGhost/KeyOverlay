@@ -10,25 +10,27 @@
         <Style TargetType="Label">
             <Setter Property="Margin" Value="-2"/>
         </Style>
+        <Style TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal"/>
+        </Style>
     </Control.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <!--Display Values-->
-        <Label Grid.Row="0" Content="{Binding ElementName=UserControl, Path=KPS, FallbackValue='KPSValue'}"
+
+        <StackPanel Grid.Row="0">
+            <Label Content="{Binding ElementName=UserControl, Path=KPS, FallbackValue='KPSValue'}"
                Name="KpsVal"/>
-        <Label Grid.Row="1" Content="{Binding ElementName=UserControl, Path=KeyCount, FallbackValue='KeyCountValue'}"
-               Name="KeyCountVal"/>
-        <!--Suffix-->
-        <Label Grid.Row="0" Grid.Column="1" Content="kps"
+            <Label Grid.Row="0" Grid.Column="1" Content="kps"
                Name="KpsSuffix" HorizontalAlignment="Left"/>
-        <Label Grid.Row="1" Grid.Column="1" Content="keys"
+        </StackPanel>
+        <StackPanel Grid.Row="1">
+            <Label Content="{Binding ElementName=UserControl, Path=KeyCount, FallbackValue='KeyCountValue'}"
+               Name="KeyCountVal"/>
+            <Label Grid.Row="1" Grid.Column="1" Content="keys"
                Name="CountSuffix" HorizontalAlignment="Left"/>
+        </StackPanel>
     </Grid>
 </UserControl>
