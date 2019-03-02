@@ -105,13 +105,24 @@ namespace KeyOverlay.Controls
         #region KPS Counting
 
         private byte[] KpsPerTick = new byte[10];
-        private byte CurrentTick;
+
+        private byte _currenttick;
+        private byte CurrentTick
+        {
+            set
+            {
+                if (value >= 10)
+                    _currenttick = 0;
+                else
+                    _currenttick = value;
+            }
+            get => _currenttick;
+        }
 
         private void KPSTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             KpsPerTick[CurrentTick] = 0;
-            if (++CurrentTick >= 10)
-                CurrentTick = 0;
+            CurrentTick++;
         }
 
         #endregion
