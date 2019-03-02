@@ -54,6 +54,8 @@ namespace KeyOverlay.Controls
             }
         }
 
+        #region Properties
+
         private double _kps, _keycount;
 
         public double KPS
@@ -75,6 +77,8 @@ namespace KeyOverlay.Controls
             }
             get => _keycount;
         }
+
+        #endregion
 
         #region Public Methods
 
