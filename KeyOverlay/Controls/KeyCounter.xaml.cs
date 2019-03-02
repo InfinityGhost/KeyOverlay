@@ -25,6 +25,23 @@ namespace KeyOverlay.Controls
         {
             InitializeComponent();
             SetPanel(panel);
+
+            var timer = new System.Timers.Timer
+            {
+                AutoReset = true,
+                Interval = 100,
+            };
+            timer.Elapsed += KPSTimer_Elapsed;
+
+            var kpsUpdate = new System.Timers.Timer
+            {
+                AutoReset = true,
+                Interval = 10,
+            };
+            kpsUpdate.Elapsed += (tmr, args) => KPS = KpsPerTick[CurrentTick];
+
+            timer.Start();
+            kpsUpdate.Start();
         }
 
         private void Viewer_KeyChanged(object sender, bool e)
@@ -32,7 +49,8 @@ namespace KeyOverlay.Controls
             if (e)
             {
                 KeyCount++;
-                // Add KPS math
+                for (int i = 0; i < 10; i++)
+                    KpsPerTick[i]++;
             }
         }
 
@@ -76,6 +94,20 @@ namespace KeyOverlay.Controls
         public void AddKey(KeyStateViewer viewer)
         {
             viewer.KeyChanged += Viewer_KeyChanged;
+        }
+
+        #endregion
+
+        #region KPS Counting
+
+        private byte[] KpsPerTick = new byte[10];
+        private byte CurrentTick;
+
+        private void KPSTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            KpsPerTick[CurrentTick] = 0;
+            if (++CurrentTick >= 10)
+                CurrentTick = 0;
         }
 
         #endregion
