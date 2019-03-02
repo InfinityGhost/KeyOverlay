@@ -96,6 +96,13 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Configuration" DataContext="{Binding ElementName=Window, Path=Config}">
+                <TabItem.Resources>
+                    <Style TargetType="GroupBox" BasedOn="{StaticResource Base}"/>
+                    <Style TargetType="Button" BasedOn="{StaticResource ButtonBase}"/>
+                    <Style TargetType="TextBox">
+                        <EventSetter Event="LostFocus" Handler="SettingTextbox_LostFocus"/>
+                    </Style>
+                </TabItem.Resources>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -103,13 +110,6 @@
                     </Grid.ColumnDefinitions>
                     <ScrollViewer Grid.Column="0">
                         <StackPanel>
-                            <StackPanel.Resources>
-                                <Style TargetType="GroupBox" BasedOn="{StaticResource Base}"/>
-                                <Style TargetType="Button" BasedOn="{StaticResource ButtonBase}"/>
-                                <Style TargetType="TextBox">
-                                    <EventSetter Event="LostFocus" Handler="SettingTextbox_LostFocus"/>
-                                </Style>
-                            </StackPanel.Resources>
                             <Label Content="Colors" Style="{StaticResource TitleLabel}"/>
                             <GroupBox Header="Key Down Color (Hex)">
                                 <TextBox Text="{Binding Path=KeyDownBrush}"/>
