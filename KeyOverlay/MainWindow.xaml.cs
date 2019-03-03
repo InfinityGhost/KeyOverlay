@@ -50,6 +50,9 @@ namespace KeyOverlay
             get => _cfg;
         }
 
+        private KeyPopoutWindow PopoutWindow;
+        private KeyCounter KeyCounter;
+
         private bool _addingkey = false;
         public bool AddingKey
         {
@@ -77,9 +80,6 @@ namespace KeyOverlay
             }
             get => _addingkey;
         }
-
-        private KeyPopoutWindow PopoutWindow;
-        private KeyCounter KeyCounter;
 
         private bool _poppedout = false;
         public bool IsPoppedOut
